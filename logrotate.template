@@ -1,0 +1,15 @@
+/var/log/<NAME>.log {
+  rotate 6
+  weekly
+  compress
+  missingok
+  notifempty
+}
+
+/var/log/<NAME>.err {
+  rotate 6
+  weekly
+  compress
+  missingok
+  notifempty
+}
