@@ -9,11 +9,11 @@
 # Description:       <DESCRIPTION>
 ### END INIT INFO
 
-dir=<DIRECTORY>
+name=<NAME>
 cmd=<COMMAND>
 user=<USER>
+dir=<DIRECTORY>
 
-name=`basename $0`
 pid_file="/var/run/$name.pid"
 stdout_log="/var/log/$name.log"
 stderr_log="/var/log/$name.err"
