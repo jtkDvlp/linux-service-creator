@@ -1,18 +1,23 @@
 #!/bin/sh
 ### BEGIN INIT INFO
 # Provides:
-# Required-Start:    <REQUIRED-START>
-# Required-Stop:     <REQUIRED-STOP>
+# Required-Start:    <DEPS>
+# Required-Stop:     <DEPS>
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
-# Short-Description: Start '<NAME>'-daemon at boot time
-# Description:       <DESCRIPTION>
+# Short-Description: <DESC>
+# Description:       Start '<NAME>'-daemon at boot time
 ### END INIT INFO
 
-name=<NAME>
-cmd=<COMMAND>
-user=<USER>
-dir=<DIRECTORY>
+if [ $(id -u) -ne 0 ]; then
+  echo "Error: Please run as root"
+  exit 1
+fi
+
+name="<NAME>"
+cmd="<CMD>"
+user="<USER>"
+dir="<DIR>"
 
 pid_file="/var/run/$name.pid"
 stdout_log="/var/log/$name.log"
@@ -49,8 +54,7 @@ case "$1" in
     if is_running; then
         echo -n "Stopping $name.."
         kill `get_pid`
-        for i in 1 2 3 4 5 6 7 8 9 10
-        # for i in `seq 10`
+        for i in `seq 10`
         do
             if ! is_running; then
                 break
@@ -91,7 +95,24 @@ case "$1" in
     fi
     ;;
     uninstall)
-    echo "TODO"
+    echo -n "Are you really sure you want to uninstall this service? That cannot be undone. [yes|no]: "
+    read sure
+    if [ "$sure" = "yes" ]; then
+      echo "...Stopping service"
+      $0 stop
+      if is_running; then
+          echo "Unable to stop, will not attempt to uninstall"
+          exit 1
+      fi
+      echo "...removing service from startup at boot"
+      update-rc.d -f "$name" remove
+      echo "...removing logrotate configuration"
+      rm -f "/etc/logrotate.d/$name"
+      echo "...removing logrotate configuration"
+      echo "Notice: log files are not be removed"
+      echo "...removing service from /etc/init.d"
+      rm -f "/etc/init.d/$name"
+    fi
     ;;
     *)
     echo "Usage: $0 {start|stop|restart|status|uninstall}"
