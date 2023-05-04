@@ -8,7 +8,7 @@ fi
 
 if [ -z ${name+x} ] || [ -z ${cmd+x} ]; then
 	echo "Error: Please set name and cmd parameter"
-        echo "usage: cat create.sh | name=\"x\" cmd=\"y\" [user dir desc deps (escape \$ with \\)] bash"
+        echo "usage: cat create.sh | sudo name=\"x\" cmd=\"y\" [user dir desc deps (escape \$ with \\)] bash"
 	exit 1
 fi
 
